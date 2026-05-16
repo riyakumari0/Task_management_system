@@ -34,8 +34,8 @@ With a premium "Botanical Green" aesthetic, AstroTask provides a dual-role envir
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/astrotask.git
-   cd astrotask
+   git clone https://github.com/riyakumari0/Task_management_system.git
+   cd Task_management_system
    ```
 
 2. **Install Dependencies**
