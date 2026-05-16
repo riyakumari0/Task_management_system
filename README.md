@@ -4,6 +4,8 @@ A modern, role-based web application built to manage large-scale LLM training, d
 
 With a premium "Botanical Green" aesthetic, AstroTask provides a dual-role environment where **Lead Evaluators (Admins)** can seamlessly deploy bulk tasks, and **LLM Trainees (Members)** can complete assignments to earn XP, level up, and climb the leaderboard.
 
+🌍 **Live Demo:** [https://taskmanagementsystem-production-23ea.up.railway.app](https://taskmanagementsystem-production-23ea.up.railway.app)
+
 ![AstroTask Dashboard Overview](/dashboard_banner_green.png)
 
 ## 🚀 Key Features
