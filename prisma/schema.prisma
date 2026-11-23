@@ -20,6 +20,17 @@ model User {
   tasks            Task[]
   supportMessages  SupportMessage[]
   notifications    Notification[]
+  oauthAccounts    OAuthAccount[]
+}
+
+// A Google, X or Facebook login belonging to a user
+model OAuthAccount {
+  provider          String
+  providerAccountId String
+  userId            String
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
 }
 
 model Project {

@@ -1,7 +1,15 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+
+const OAUTH_MESSAGES: Record<string, string> = {
+  oauth_not_configured: 'This sign-in option is not set up yet. Please use your email and password.',
+  oauth_pending: 'Your account is pending admin approval.',
+  oauth_email_exists: 'An account with this email already exists. Please sign in with your password.',
+  oauth_no_email: 'We could not get your email from that account. Please sign up with your email instead.',
+  oauth_failed: 'Sign-in was cancelled or failed. Please try again.',
+};
 
 export default function LandingAuth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,6 +19,14 @@ export default function LandingAuth() {
   const [role, setRole] = useState('MEMBER');
   const [error, setError] = useState('');
   const router = useRouter();
+
+  // Show why a Google, X or Facebook sign-in came back here
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get('error');
+    if (!code) return;
+    setError(OAUTH_MESSAGES[code] || OAUTH_MESSAGES.oauth_failed);
+    window.history.replaceState(null, '', '/');
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,9 +157,9 @@ export default function LandingAuth() {
           
           <div style={{ marginTop: 'auto', paddingTop: '24px', fontSize: '0.75rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center' }}>
             <span>Sign in with:</span>
-            <span style={{ fontWeight: 'bold', color: '#f59e0b', cursor: 'pointer' }}>G</span>
-            <span style={{ fontWeight: 'bold', color: '#f59e0b', cursor: 'pointer' }}>X</span>
-            <span style={{ fontWeight: 'bold', color: '#f59e0b', cursor: 'pointer' }}>f</span>
+            <a href="/api/auth/oauth/google" aria-label="Sign in with Google" style={{ fontWeight: 'bold', color: '#f59e0b', textDecoration: 'none', padding: '4px' }}>G</a>
+            <a href="/api/auth/oauth/x" aria-label="Sign in with X" style={{ fontWeight: 'bold', color: '#f59e0b', textDecoration: 'none', padding: '4px' }}>X</a>
+            <a href="/api/auth/oauth/facebook" aria-label="Sign in with Facebook" style={{ fontWeight: 'bold', color: '#f59e0b', textDecoration: 'none', padding: '4px' }}>f</a>
           </div>
         </div>
       </div>

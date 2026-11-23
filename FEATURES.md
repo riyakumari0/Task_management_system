@@ -22,6 +22,8 @@ AstroTask manages teams that do LLM training and evaluation work. Lead Evaluator
 2. The account waits for approval, whichever role was picked.
 3. An admin approves it under **Team Management**, and the person can log in.
 
+People can also use Google, X or Facebook once that provider's keys are set (see `.env.example`). Their first login creates a trainee account that waits for approval. If the email already has an account, they must use that account's original sign-in method.
+
 Admins can also add accounts directly. These are approved at once.
 
 The first admin is made from the terminal, after signing up:
@@ -66,6 +68,8 @@ A 25-minute timer, available on a trainee's own tasks that are In progress.
 |---|---|---|---|
 | `/api/auth/register` | POST | Anyone | Request an account |
 | `/api/auth/login`, `/api/auth/logout` | POST | Anyone | Log in or out |
+| `/api/auth/oauth/[provider]` | GET | Anyone | Start Google, X or Facebook login |
+| `/api/auth/oauth/[provider]/callback` | GET | Anyone | Finish that login |
 | `/api/auth/me` | GET | Logged in | Current user |
 | `/api/projects` | GET | Logged in | Projects the user can see |
 | `/api/projects` | POST | Admin | Create a project |
@@ -86,7 +90,7 @@ A 25-minute timer, available on a trainee's own tasks that are In progress.
 
 ## Data
 
-Defined in [prisma/schema.prisma](prisma/schema.prisma): `User`, `Project`, `ProjectMember`, `Task`, `SupportMessage` and `Notification`.
+Defined in [prisma/schema.prisma](prisma/schema.prisma): `User`, `OAuthAccount`, `Project`, `ProjectMember`, `Task`, `SupportMessage` and `Notification`.
 
 Removing a user deletes their memberships, messages and notifications. Their tasks stay and become unassigned.
 
@@ -98,13 +102,14 @@ Removing a user deletes their memberships, messages and notifications. Their tas
 | Dashboard screens | `src/app/dashboard/` |
 | API routes | `src/app/api/` |
 | Sessions and login checks | `src/lib/auth.ts` |
+| Google, X and Facebook login | `src/lib/oauth.ts` |
 | Database client | `src/lib/prisma.ts` |
 | First-admin script | `scripts/make-admin.mjs` |
 
 ## Current limits
 
 - Some screens show sample data: the trainee dashboard's progress chart and evaluation batches, the calendar panel, and the Reports numbers. The report download buttons aren't connected yet.
-- The Google, X and Facebook icons and "Forgot password?" aren't connected yet.
+- "Forgot password?" isn't connected yet.
 - The Track page doesn't list trainees for admins yet, and project cards show 0 tasks.
 - SQLite needs permanent storage when hosted, or data can be lost on each deploy.
 - There are no automated tests yet.
