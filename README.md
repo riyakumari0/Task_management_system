@@ -8,6 +8,8 @@ With a premium "Botanical Green" aesthetic, AstroTask provides a dual-role envir
 
 ![AstroTask Dashboard Overview](/dashboard_banner_green.png)
 
+📖 **Full app guide (roles, features, API, security):** [FEATURES.md](FEATURES.md)
+
 ## 🚀 Key Features
 
 ### 👑 Lead Evaluator (Admin) Features
@@ -43,17 +45,27 @@ With a premium "Botanical Green" aesthetic, AstroTask provides a dual-role envir
    npm install
    ```
 
-3. **Initialize the Database**
+3. **Set the login secret** (required, at least 32 characters)
+   ```bash
+   echo "JWT_SECRET=$(openssl rand -hex 32)" > .env
+   ```
+
+4. **Initialize the Database**
    ```bash
    npx prisma db push
    ```
 
-4. **Start the Development Server**
+5. **Start the Development Server**
    ```bash
    npm run dev
    ```
 
-5. **Access the App**
-   Open `http://localhost:3000` in your browser. 
-   
-   *Tip: You can use the built-in Admin account (`admin3@astrotask.com` / `password`) to access the Lead Evaluator dashboard and start managing your team!*
+6. **Access the App**
+   Open `http://localhost:3000` in your browser and sign up.
+
+7. **Create the first Admin**
+   New accounts wait for approval. Make your own account the first admin:
+   ```bash
+   npm run make-admin -- you@example.com
+   ```
+   After that, approve everyone else from the Team Management page.

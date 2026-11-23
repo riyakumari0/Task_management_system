@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { decrypt } from '@/lib/auth';
-import { cookies } from 'next/headers';
+import { getSession } from '@/lib/auth';
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const session = cookieStore.get('session')?.value;
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  
-  const payload = await decrypt(session);
+  const payload = await getSession();
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   if (payload.role === 'ADMIN') {
@@ -29,15 +24,12 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const cookieStore = await cookies();
-  const session = cookieStore.get('session')?.value;
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  
-  const payload = await decrypt(session);
+  const payload = await getSession();
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { message } = await req.json();
-  if (!message) return NextResponse.json({ error: 'Message required' }, { status: 400 });
+  if (typeof message !== 'string' || !message.trim()) return NextResponse.json({ error: 'Message required' }, { status: 400 });
+  if (message.length > 2000) return NextResponse.json({ error: 'Message is too long' }, { status: 400 });
 
   // Save user message
   await prisma.supportMessage.create({

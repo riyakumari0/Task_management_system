@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const tasks = await prisma.task.findMany({
     where: {
       ...(projectId ? { projectId } : {}),
-      ...(session.role === 'MEMBER' ? {
+      ...(session.role !== 'ADMIN' ? {
         project: { members: { some: { userId: session.userId } } }
       } : {})
     },

@@ -46,6 +46,7 @@ model Task {
   description String?
   status      String    @default("TODO") // TODO, IN_PROGRESS, REVIEW, DONE
   dueDate     DateTime?
+  xpAwarded   Boolean   @default(false) // XP is given only once per task
   projectId   String
   assigneeId  String?
   project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)

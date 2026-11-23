@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, MIN_PASSWORD_LENGTH } from '@/lib/auth';
 import bcrypt from 'bcryptjs';
 
 export async function POST(req: Request) {
@@ -13,6 +13,9 @@ export async function POST(req: Request) {
     const { users, password, role } = await req.json();
     if (!users || !Array.isArray(users) || users.length === 0 || !password) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    }
+    if (typeof password !== 'string' || password.length < MIN_PASSWORD_LENGTH) {
+      return NextResponse.json({ error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters.` }, { status: 400 });
     }
 
     const emails = users.map((u: any) => u.email);

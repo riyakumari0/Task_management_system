@@ -13,7 +13,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   try {
     const user = await prisma.user.update({
       where: { id },
-      data: { isApproved: true }
+      data: { isApproved: true },
+      select: { id: true, email: true, name: true, role: true, isApproved: true }
     });
     return NextResponse.json({ success: true, user });
   } catch (error) {
