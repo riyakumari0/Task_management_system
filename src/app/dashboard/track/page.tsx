@@ -9,7 +9,7 @@ export default function TrackPage() {
     fetch('/api/auth/me').then(r => r.json()).then(data => {
       setUser(data.user);
       if (data.user?.role === 'ADMIN') {
-        fetch('/api/users').then(r => r.json()).then(setAllUsers);
+        fetch('/api/users?limit=none').then(r => r.json()).then(setAllUsers);
       }
     });
   }, []);
@@ -34,7 +34,7 @@ export default function TrackPage() {
                 </tr>
               </thead>
               <tbody>
-                {allUsers.users?.map((u: any) => (
+                {(Array.isArray(allUsers) ? allUsers : []).map((u: any) => (
                   <tr key={u.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
                     <td style={{ padding: '12px', fontWeight: 600 }}>{u.name}</td>
                     <td style={{ padding: '12px', color: 'var(--text-muted)' }}>{u.email}</td>

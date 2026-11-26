@@ -11,7 +11,8 @@ export async function GET() {
       members: { some: { userId: session.userId } }
     },
     include: {
-      tasks: { select: { status: true } }
+      tasks: { select: { status: true } },
+      _count: { select: { tasks: true } }
     }
   });
   return NextResponse.json(projects);
